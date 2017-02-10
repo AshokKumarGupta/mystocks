@@ -1,19 +1,21 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
+import { FinanceService } from '../../app/finance.service';
 
 
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
+  providers: [FinanceService]
 })
 export class HomePage {
   stocks: any[];
   newstock:string; 
   showField:boolean;
-  myRestStocks = {};
+  
 
-  constructor(public navCtrl: NavController, public financeService: FinanceService) {
+  constructor(public navCtrl: NavController, private financeService: FinanceService) {
   	  	this.stocks = [{name: "HDFC",	price: 500.2, upordown:"up"}, {name: "ICICI",	price: 1410.2, upordown:"up"},{name: "SBI",	price: 800.2, upordown:"up"}]
   }
 
@@ -23,7 +25,9 @@ export class HomePage {
 
   addNewStock(sname){
 	this.stocks.push({name:sname,price:1,upordown:"up"})
-	console.log(this.FinanceService.getStocks('HDFC').subscribe(data => this.myRestStocks = data));
+	this.financeService.getStocks('HDFC').subscribe(data => {
+		console.log(JSON.parse(data));
+	});
   }
 
   removeStock(index){
@@ -32,3 +36,4 @@ export class HomePage {
   
 
 }
+
