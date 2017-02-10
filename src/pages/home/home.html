@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only>
+        <ion-icon name="contact"></ion-icon>
+      </button>
+    </ion-buttons>
+    <div item-center>My Stocks</div>
+    <ion-buttons end>
+      <button ion-button icon-only (click)=toggleSearchVisibility()>
+        <ion-icon name="add-circle" ></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+    <ion-item *ngIf="showField">
+      <ion-label floating>Add New Stock</ion-label>
+      <ion-input type="text" [(ngModel)]="newstock" (change)="addNewStock(newstock)" ></ion-input>
+    </ion-item>
+</ion-header>
+
+<ion-content >
+      <ion-list>
+        <ion-item-sliding *ngFor="let stock of stocks; let ii = index" class="stock__container">
+          <ion-item>
+            <h2><span class="name">{{stock.name}}</span><span class="price">{{stock.price}}</span>
+              <span class="upordown width10">
+                <button clear="" color="primary" icon-only="" ion-button="" class="disable-hover button button-ios button-clear button-clear-ios button-clear-ios-dark" ng-reflect-color="dark"><span class="button-inner">
+                  <ion-icon is-active="false" name="analytics"  aria-label="analytics" ng-reflect-name="analytics"></ion-icon>
+                </span></button>
+
+              </span>
+              <span class="upordown width10">
+                <button clear="" color="secondary"  (click)=removeStock(ii) icon-only="" ion-button="" class="disable-hover button button-ios button-clear button-clear-ios button-clear-ios-dark" ng-reflect-color="dark"><span class="button-inner" >
+                  <ion-icon is-active="false" name="remove-circle"  aria-label="remove-circle" ng-reflect-name="remove-circle"></ion-icon>
+                </span></button>
+
+              </span>
+            </h2>
+
+          </ion-item>
+          <ion-item-options side="left">
+            <button ion-button color="primary">
+              <ion-icon name="text"></ion-icon>
+              Text
+            </button>
+            <button ion-button color="secondary">
+              <ion-icon name="call"></ion-icon>
+              Call
+            </button>
+          </ion-item-options>
+          <ion-item-options side="right">
+            <button ion-button color="primary">
+              <ion-icon name="mail"></ion-icon>
+              Email
+            </button>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>  
+</ion-content>
