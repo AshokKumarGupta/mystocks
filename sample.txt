@@ -1,4 +1,4 @@
-interface MyStockList{
+Interface MyStockList{
 	c:string
 	"c_fix":string
 	ccol:string

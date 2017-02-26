@@ -13,27 +13,13 @@ export class HomePage {
   stocks: any[];
   newstock:string; 
   showField:boolean;
-  myStockList: myStockList;
+  myStockList: any[];
   httpresponse:{};
   errorMessage: string;
   
 
   constructor(public navCtrl: NavController, private financeService: FinanceService) {
-  	  	this.stocks = [{
-	  	  		name: "HDFC",	
-	  	  		price: 500.2, 
-	  	  		upordown:"up"
-  	  		}, 
-  	  		{
-	  	  		name: "ICICI",	
-	  	  		price: 1410.2, 
-	  	  		upordown:"up"
-  	  		},
-  	  		{
-	  	  		name: "SBI",	
-	  	  		price: 800.2, 
-	  	  		upordown:"up"
-  	  		}]
+  	  	/* ToDo: get the list from database */
   }
 
   toggleSearchVisibility(sname){
@@ -44,9 +30,13 @@ export class HomePage {
 
   addNewStock(sname){
 	// this.stocks.push({name:sname,price:1,upordown:"up"})
-	this.financeService.getStocks(sname).subscribe(data => this.myStockList = JSON.stringify(data); console.log(this.myStockList),
+	this.financeService.getStocks(sname).subscribe(data => this.myStockList.push(this.convertToJSObject(data)),
                        error =>  this.errorMessage = <any>error);
 
+  }
+
+  convertToJSObject(str){
+  		return JSON.parse(String(JSON.stringify(str)).replace("// [", "["));
   }
 
   removeStock(index){
@@ -55,23 +45,3 @@ export class HomePage {
   
 
 }
-
-interface myStockList {
-	c:string
-	"c_fix":string
-	ccol:string
-	cp:string
-	"cp_fix":string
-	e:string
-	id:string
-	l:string
-	"l_cur":string
-	"l_fix":string
-	lt:string
-	"lt_dts":string
-	ltt:string
-	"pcls_fix":string
-	s:string
-	t:string
-}
-

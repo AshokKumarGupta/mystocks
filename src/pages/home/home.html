@@ -20,9 +20,9 @@
 
 <ion-content >
       <ion-list>
-        <ion-item-sliding *ngFor="let stock of stocks; let ii = index" class="stock__container">
+        <ion-item-sliding *ngFor="let stock of myStockList; let ii = index" class="stock__container">
           <ion-item>
-            <h2><span class="name">{{stock.name}}</span><span class="price">{{stock.price}}</span>
+            <h2><span class="name">{{stock.t}}</span><span class="price">{{stock.l_cur}}</span>
               <span class="upordown width10">
                 <button clear="" color="primary" icon-only="" ion-button="" class="disable-hover button button-ios button-clear button-clear-ios button-clear-ios-dark" ng-reflect-color="dark"><span class="button-inner">
                   <ion-icon is-active="false" name="analytics"  aria-label="analytics" ng-reflect-name="analytics"></ion-icon>
