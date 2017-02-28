@@ -30,17 +30,18 @@ export class HomePage {
 
   addNewStock(sname){
 	// this.stocks.push({name:sname,price:1,upordown:"up"})
-	this.financeService.getStocks(sname).subscribe(data => this.myStockList.push(this.convertToJSObject(data)),
-                       error =>  this.errorMessage = <any>error);
+	this.financeService.getStocks(sname).subscribe(data => {
+                         if(typeof this.myStockList == "undefined" ){
+                           this.myStockList = data
+                         }else{
+                           this.myStockList.push(data[0]);
+                         }
+                       });
 
-  }
-
-  convertToJSObject(str){
-  		return JSON.parse(String(JSON.stringify(str)).replace("// [", "["));
   }
 
   removeStock(index){
-	this.stocks.splice(index,1);
+    	this.myStockList.splice(index,1);
   }
   
 
