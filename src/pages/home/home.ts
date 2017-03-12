@@ -18,19 +18,16 @@ export class HomePage {
   httpresponse:{};
   errorMessage: string;
   tickerNames:  any[];
+  sIndex:number;
+
   
 
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
   	  	/* ToDo: get the list from database */
-        
+        this.sIndex = 0;
         this.tickerStorage.get('shares').then((val) => {
-           if(!!val[0]){
-               var __this = this;
-               //setTimeout(function(){
-                 for(var ii=0,jj=val;ii<jj.length;ii++){
-                     __this.addNewStock(val);
-                 }
-               //}, 1000);
+           if(!!val[0] && val.length){
+              this.myTickerLoop(val, val.length);
            }
        })
          
@@ -40,6 +37,17 @@ export class HomePage {
     this.showField = !this.showField;
   }
 
+  myTickerLoop(val, iLength){
+    var __this = this;
+    setTimeout(function () { 
+        if (__this.sIndex < iLength) {
+          __this.addNewStock(val[__this.sIndex]);
+          __this.myTickerLoop(val,iLength)
+        }
+        __this.sIndex++;
+    }, 1000);
+  }
+ 
 
 
   addNewStock(sname){
