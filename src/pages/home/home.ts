@@ -10,6 +10,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'home.html',
   providers: [FinanceService,Storage]
 })
+
 export class HomePage {
   showField:boolean;
   myStockList: any[];
@@ -61,12 +62,13 @@ export class HomePage {
   }
 
   resetStock(){
-    this.tickerNames = [];
-    this.tickerStorage.set('shares',this.tickerNames);
+      this.myStockList.splice(0);
+      this.tickerNames.splice(0);
+      this.tickerStorage.set('shares',this.tickerNames);
+      this.reloadStocks();
   }
 
   reloadStocks(){
-      this.resetStock();
       this.sIndex = 0;
       this.tickerStorage.get('shares').then((val) => {
          if(!!val[0] && val.length){
