@@ -1,8 +1,8 @@
 <ion-header>
   <ion-navbar>
     <ion-buttons start>
-      <button ion-button icon-only>
-        <ion-icon name="contact"></ion-icon>
+      <button ion-button icon-only (click)=reloadStocks()>
+        <ion-icon name="refresh"></ion-icon>
       </button>
     </ion-buttons>
     <div item-center>My Stocks</div>
@@ -14,14 +14,14 @@
   </ion-navbar>
     <ion-item *ngIf="showField">
       <ion-label floating>Add New Stock</ion-label>
-      <ion-input type="text" [(ngModel)]="newstock" (change)="addNewStock(newstock)" ></ion-input>
+      <ion-input type="text" [(ngModel)]="newstock" (change)="addNewStock(newstock)"  ></ion-input>
     </ion-item>
 </ion-header>
 
 <ion-content >
       <ion-list>
         <ion-item-sliding *ngFor="let stock of myStockList; let ii = index" class="stock__container">
-          <ion-item>
+          <ion-item >
             <h2><span class="name">{{stock.t}}</span><span class="price">{{stock.l_cur}}</span>
               <span class="upordown width10">
                 <button clear="" color="primary" icon-only="" ion-button="" class="disable-hover button button-ios button-clear button-clear-ios button-clear-ios-dark" ng-reflect-color="dark"><span class="button-inner">

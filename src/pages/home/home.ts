@@ -11,29 +11,20 @@ import { Storage } from '@ionic/storage';
   providers: [FinanceService,Storage]
 })
 export class HomePage {
-  stocks: any[];
-  newstock:string; 
   showField:boolean;
   myStockList: any[];
-  httpresponse:{};
-  errorMessage: string;
   tickerNames:  any[];
+  newstock: string;
   sIndex:number;
 
   
 
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
   	  	/* ToDo: get the list from database */
-        this.sIndex = 0;
-        this.tickerStorage.get('shares').then((val) => {
-           if(!!val[0] && val.length){
-              this.myTickerLoop(val, val.length);
-           }
-       })
-         
+        this.reloadStocks();      
   }
 
-  toggleSearchVisibility(sname){
+  toggleSearchVisibility(){
     this.showField = !this.showField;
   }
 
@@ -53,22 +44,41 @@ export class HomePage {
   addNewStock(sname){
 	// this.stocks.push({name:sname,price:1,upordown:"up"})
 
-	this.financeService.getStocks(sname).subscribe(data => {
-                         if(!this.myStockList){
-                           this.myStockList = data
-                           this.tickerNames = [data[0]["t"]];
-                         }else{
-                           this.myStockList.push(data[0]);
-                           this.tickerNames.push(data[0]["t"]);
-                         }
-                         
-                         this.tickerStorage.set('shares',this.tickerNames);
-                       });
+	    this.financeService.getStocks(sname).subscribe(data => {
+           if(!this.myStockList){
+             this.myStockList = data
+             this.tickerNames = [data[0]["t"]]; 
+           }else{
+             this.myStockList.push(data[0]);
+             this.tickerNames.push(data[0]["t"]);
+           }
+           this.newstock = "";
+           this.showField = false;
+           this.tickerStorage.set('shares',this.tickerNames);
 
+     });
+
+  }
+
+  resetStock(){
+    this.tickerNames = [];
+    this.tickerStorage.set('shares',this.tickerNames);
+  }
+
+  reloadStocks(){
+      this.resetStock();
+      this.sIndex = 0;
+      this.tickerStorage.get('shares').then((val) => {
+         if(!!val[0] && val.length){
+            this.myTickerLoop(val, val.length);
+         }
+     })
   }
 
   removeStock(index){
     	this.myStockList.splice(index,1);
+      this.tickerNames.splice(index,1);
+      this.tickerStorage.set('shares',this.tickerNames);
   }
   
 
