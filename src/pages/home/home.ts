@@ -22,7 +22,7 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
   	  	/* ToDo: get the list from database */
-        this.reloadStocks();      
+        this.loadStocks();      
   }
 
   toggleSearchVisibility(){
@@ -53,7 +53,7 @@ export class HomePage {
              this.myStockList.push(data[0]);
              this.tickerNames.push(data[0]["t"]);
            }
-           this.newstock = "";
+           this.newstock = ""; 
            this.showField = false;
            this.tickerStorage.set('shares',this.tickerNames);
 
@@ -62,19 +62,23 @@ export class HomePage {
   }
 
   resetStock(){
-      this.myStockList.splice(0);
-      this.tickerNames.splice(0);
-      this.tickerStorage.set('shares',this.tickerNames);
-      this.reloadStocks();
+      //if(!!this.myStockList) {
+        this.myStockList = undefined;
+      //}
   }
 
-  reloadStocks(){
-      this.sIndex = 0;
+  loadStocks(){
+    this.sIndex = 0;
       this.tickerStorage.get('shares').then((val) => {
          if(!!val[0] && val.length){
             this.myTickerLoop(val, val.length);
          }
      })
+  }
+
+  reloadStocks(){
+      this.resetStock();
+      this.loadStocks();
   }
 
   removeStock(index){
