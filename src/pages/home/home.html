@@ -5,6 +5,11 @@
         <ion-icon name="refresh"></ion-icon>
       </button>
     </ion-buttons>
+    <ion-buttons start>
+      <button ion-button icon-only (click)=toggleFilters()>
+        <ion-icon name="options"></ion-icon> 
+      </button>
+    </ion-buttons>
     <div item-center>My Stocks</div>
     <ion-buttons end>
       <button ion-button icon-only (click)=toggleSearchVisibility()>
@@ -12,17 +17,36 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-    <ion-item *ngIf="showField">
+    <ion-item *ngIf="showField" class="flyout">
       <ion-label floating>Add New Stock</ion-label>
       <ion-input type="text" [(ngModel)]="newstock" (change)="addNewStock(newstock)"  ></ion-input>
     </ion-item>
+    <ion-list radio-group *ngIf="showFilter" class="flyout">
+      <ion-list-header>
+        Filter Stocks
+      </ion-list-header>
+
+      <ion-item >
+        <ion-label>sPrice</ion-label>
+        <ion-radio checked="true" value="Price"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>sName</ion-label>
+        <ion-radio value="Name"></ion-radio>
+      </ion-item>
+    </ion-list>
 </ion-header>
 
 <ion-content >
       <ion-list>
         <ion-item-sliding *ngFor="let stock of myStockList; let ii = index" class="stock__container">
           <ion-item >
-            <h2><span class="name">{{stock.t}}</span><span class="price">{{stock.l_cur}}</span>
+            <h2><span class="name">{{stock.t}}</span><span class="price">{{stock.l_cur}} 
+                  <span *ngIf="stock.cp_fix>0" class="ticker_high">{{stock.c}}({{stock.cp_fix}})</span>
+                  <span *ngIf="stock.cp_fix==0" class="ticker_neutral">{{stock.c}}({{stock.cp_fix}})</span>
+                  <span *ngIf="stock.cp_fix<0" class="ticker_low">{{stock.c}}({{stock.cp_fix}})</span>
+              </span>
               <span class="upordown width10">
                 <button clear="" color="primary" icon-only="" ion-button="" class="disable-hover button button-ios button-clear button-clear-ios button-clear-ios-dark" ng-reflect-color="dark"><span class="button-inner">
                   <ion-icon is-active="false" name="analytics"  aria-label="analytics" ng-reflect-name="analytics"></ion-icon>

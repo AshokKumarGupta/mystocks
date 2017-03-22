@@ -29,6 +29,10 @@ export class HomePage {
     this.showField = !this.showField;
   }
 
+  toggleFilters(){
+    this.showFilter = !this.showFilter;
+  }
+
   myTickerLoop(val, iLength){
     var __this = this;
     setTimeout(function () { 
