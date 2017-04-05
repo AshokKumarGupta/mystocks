@@ -11,26 +11,54 @@ import { Storage } from '@ionic/storage';
   providers: [FinanceService,Storage]
 })
 
-export class HomePage {
+export class HomePage { 
   showField:boolean;
   myStockList: any[];
   tickerNames:  any[];
   newstock: string;
   sIndex:number;
+  showFilter:boolean;
 
-  
 
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
   	  	/* ToDo: get the list from database */
         this.loadStocks();      
   }
 
+  shortByCustomValue(arg){
+      this.myStockList.sort( function(name1, name2) {
+        let regex = new RegExp(",", "g");
+        let firstNumber = parseInt(name1[arg].replace(regex,""));
+        let secondNumber = parseInt(name2[arg].replace(regex,""));
+        if ( firstNumber < secondNumber ){
+          return -1;
+        }else if( firstNumber > secondNumber ){
+            return 1;
+        }else{
+          return 0;  
+        }
+      });
+      this.hideFlyoutsMenu(); 
+  }
+
+  hideFlyoutsMenu(){
+    this.showFilter = false; 
+    this.showField = false;
+  }
+
   toggleSearchVisibility(){
     this.showField = !this.showField;
+    this.showFilter = false; 
   }
 
   toggleFilters(){
     this.showFilter = !this.showFilter;
+    this.showField = false;
+  }
+
+  openGoogleChart(name){
+    let baseGoogleUrl = "https://www.google.com/finance?q=NSE:"; 
+    window.open(baseGoogleUrl+name, '_blank');
   }
 
   myTickerLoop(val, iLength){
