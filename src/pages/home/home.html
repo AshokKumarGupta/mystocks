@@ -1,5 +1,10 @@
 <ion-header>
   <ion-navbar>
+  <ion-buttons start>
+      <button ion-button icon-only (click)=toggleSearch() >
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-buttons start>
       <button ion-button icon-only (click)=reloadStocks()>
         <ion-icon name="refresh"></ion-icon>
@@ -18,29 +23,33 @@
     </ion-buttons>
   </ion-navbar>
     <ion-item *ngIf="showField" class="flyout">
-      <ion-label floating>Add New Stock</ion-label>
+      <ion-label floating>Add New Stock (Key in and Enter)</ion-label>
       <ion-input type="text" [(ngModel)]="newstock" (change)="addNewStock(newstock)"  ></ion-input>
     </ion-item>
-    <ion-list radio-group *ngIf="showFilter" class="flyout">
+    <ion-item *ngIf="showSearch" class="flyout">
+      <ion-label floating>Search Script (Key in and Enter)</ion-label>
+      <ion-input type="text" [(ngModel)]="scriptName" (change)="searchForThisScript(scriptName)"  ></ion-input>
+    </ion-item>
+    <ion-list radio-group *ngIf="showFilter" [(ngModel)]="currentfilter" class="flyout">
       <ion-list-header>
         Filter Stocks by: 
       </ion-list-header>
         <ion-item>
           <ion-label>Gainer</ion-label>
-          <ion-radio name="sorter" checked="true" value="gainer" (click)="shortByCustomGainersValue('cp_fix')" (change)="shortByCustomGainersValue('cp_fix')"></ion-radio>
+          <ion-radio value="gainer" (click)="shortByCustomGainerValue('cp_fix')" (change)="shortByCustomGainerValue('cp_fix')" ></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>Loser</ion-label>
-          <ion-radio name="sorter" value="looser" (click)="shortByCustomValue('cp_fix')" ></ion-radio>
+          <ion-radio value="looser" (click)="shortByCustomLoserValue('cp_fix')" ></ion-radio>
         </ion-item>
       <ion-item >
         <ion-label>Price</ion-label>
-        <ion-radio name="sorter" value="price" (click)="shortByCustomValue('l')" value="Price"></ion-radio>
+        <ion-radio value="price" (click)="shortByCustomValue('l')" value="Price"></ion-radio>
       </ion-item>
 
       <ion-item>
         <ion-label>Name</ion-label>
-        <ion-radio name="sorter" value="name" (click)="shortByCustomValue('t')"></ion-radio>
+        <ion-radio value="name" (click)="shortByScriptName('t')"></ion-radio>
       </ion-item>
     </ion-list>
 </ion-header>

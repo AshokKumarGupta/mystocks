@@ -5,6 +5,7 @@ import { Storage } from '@ionic/storage';
 
 
 
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -13,11 +14,13 @@ import { Storage } from '@ionic/storage';
 
 export class HomePage { 
   showField:boolean;
+  showSearch:boolean;
   myStockList: any[];
   tickerNames:  any[];
   newstock: string;
   sIndex:number;
   showFilter:boolean;
+  actualStockList:any[];
 
 
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
@@ -41,19 +44,75 @@ export class HomePage {
       this.hideFlyoutsMenu(); 
   }
 
+  shortByCustomLoserValue(arg){
+      this.myStockList.sort( function(name1, name2) {
+        let firstNumber = Number(name1[arg]);
+        let secondNumber = Number(name2[arg]);
+        if ( firstNumber < secondNumber ){
+          return -1;
+        }else if( firstNumber > secondNumber ){
+            return 1;
+        }else{
+          return 0;  
+        }
+      });
+      this.hideFlyoutsMenu(); 
+  }
+
+  shortByCustomGainerValue(arg){
+      this.myStockList.sort( function(name1, name2) {
+        let firstNumber = Number(name1[arg]);
+        let secondNumber = Number(name2[arg]);
+        if ( firstNumber < secondNumber ){
+          return 1;
+        }else if( firstNumber > secondNumber ){
+            return -1;
+        }else{
+          return 0;  
+        }
+      });
+      this.hideFlyoutsMenu(); 
+  }
+
+  shortByScriptName(arg){
+      this.myStockList.sort( function(name1, name2) {
+        return name1[arg].localeCompare(name2[arg]);
+      });
+      this.hideFlyoutsMenu(); 
+  }
+
+  searchForThisScript(script){
+    if(script.length > 2){
+       this.myStockList = this.myStockList.filter(function(value) {
+            return value.t.localeCompare(script) == 0;
+       });
+       this.hideFlyoutsMenu(); 
+    }
+
+  }
+
   hideFlyoutsMenu(){
     this.showFilter = false; 
+    this.showSearch = false;  
     this.showField = false;
+  }
+
+  toggleSearch(){
+    this.showFilter = false; 
+    this.showField = false;
+    this.showSearch = !this.showSearch;
   }
 
   toggleSearchVisibility(){
-    this.showField = !this.showField;
     this.showFilter = false; 
+    this.showSearch = false;
+    this.showField = !this.showField;
   }
 
   toggleFilters(){
-    this.showFilter = !this.showFilter;
+    this.showSearch = false;  
     this.showField = false;
+    this.showFilter = !this.showFilter;
   }
 
   openGoogleChart(name){
@@ -85,6 +144,7 @@ export class HomePage {
              this.myStockList.push(data[0]);
              this.tickerNames.push(data[0]["t"]);
            }
+           this.actualStockList = this.myStockList;
            this.newstock = ""; 
            this.showField = false;
            this.tickerStorage.set('shares',this.tickerNames);
