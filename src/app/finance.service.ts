@@ -21,9 +21,7 @@ export class FinanceService {
                     .catch(this.handleError);
   }
   private extractData(res) {
-    console.log(res._body);
     let body = JSON.parse(JSON.parse(String(JSON.stringify(res._body)).replace("// [", "[")));
-    //console.log(body.length);
     if(body.length === 1){
       return body;
     }else{
