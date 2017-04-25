@@ -23,14 +23,36 @@ export class HomePage {
   actualStockList:any[];
   scriptName:any;
   clearStcokInterval:number; 
+  isAllStocksLoaded:boolean;
+  totalStocksList:string;
+  currentShortValue:string; 
 
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
   	  	/* ToDo: get the list from database */
-        this.loadStocks();      
+        this.loadStocks();     
+  }
+
+  fullShorting(value){
+      // if(!!this.currentShortValue){
+        switch (value){
+          case "shortByCustomValue":
+              this.shortByCustomValue('l');
+          break;
+          case "shortByCustomLoserValue": 
+              this.shortByCustomLoserValue('cp_fix');
+          break;
+          case "shortByCustomGainerValue":
+              this.shortByCustomGainerValue('cp_fix');
+          break;
+          case "shortByScriptName":
+              this.shortByScriptName('t');
+          break;
+        }
+    // }
   }
 
   shortByCustomValue(arg){
-      this.myStockList.sort( function(name1, name2) {
+      this.myStockList = this.actualStockList.sort( function(name1, name2) {
         let regex = new RegExp(",", "g");
         let firstNumber = parseInt(name1[arg].replace(regex,""));
         let secondNumber = parseInt(name2[arg].replace(regex,""));
@@ -43,10 +65,11 @@ export class HomePage {
         }
       });
       this.hideFlyoutsMenu(); 
+      this.currentShortValue = "shortByCustomValue";
   }
 
   shortByCustomLoserValue(arg){
-      this.myStockList.sort( function(name1, name2) {
+      this.myStockList = this.actualStockList.sort( function(name1, name2) {
         let firstNumber = Number(name1[arg]);
         let secondNumber = Number(name2[arg]);
         if ( firstNumber < secondNumber ){
@@ -58,10 +81,11 @@ export class HomePage {
         }
       });
       this.hideFlyoutsMenu(); 
+      this.currentShortValue = "shortByCustomLoserValue";
   }
 
   shortByCustomGainerValue(arg){
-      this.myStockList.sort( function(name1, name2) {
+      this.myStockList = this.actualStockList.sort( function(name1, name2) {
         let firstNumber = Number(name1[arg]);
         let secondNumber = Number(name2[arg]);
         if ( firstNumber < secondNumber ){
@@ -73,13 +97,15 @@ export class HomePage {
         }
       });
       this.hideFlyoutsMenu(); 
+      this.currentShortValue = "shortByCustomGainerValue";
   }
 
   shortByScriptName(arg){
-      this.myStockList.sort( function(name1, name2) {
+      this.myStockList = this.actualStockList.sort( function(name1, name2) {
         return name1[arg].localeCompare(name2[arg]);
       });
       this.hideFlyoutsMenu(); 
+      this.currentShortValue = "shortByScriptName";
   }
 
   searchForThisScript(script){
@@ -94,11 +120,34 @@ export class HomePage {
     }
   }
 
+  startLiveReload(){
+      // true
+      this.isAllStocksLoaded = (this.totalStocksList  == String(this.tickerNames))? true:false;
+      this.refreshStockInterval();
+  }
+
+  stopLiveReload(){
+      clearInterval(this.clearStcokInterval);
+      this.isAllStocksLoaded = false;
+  }
+
+  refreshAllStocks(list){
+    if(this.isAllStocksLoaded && this.tickerNames.length>0){
+      this.financeService.getStocks(list).subscribe(data => {
+          this.actualStockList = data;
+      });
+    }
+    this.totalStocksList  = list; 
+    if(!!this.currentShortValue){
+        console.log("inside sorting");
+        this.fullShorting(this.currentShortValue);
+    }
+  }
+
   refreshStockInterval(){
     this.clearStcokInterval = setInterval(() => {
-        this.reloadStocks();
-    }, 5000);
-    
+      this.refreshAllStocks(this.tickerNames);
+    }, 10000);
   }
 
   hideFlyoutsMenu(){
@@ -142,11 +191,9 @@ export class HomePage {
     }, 1000);
   }
  
-
+ 
 
   addNewStock(sname){
-	// this.stocks.push({name:sname,price:1,upordown:"up"})
-
 	    this.financeService.getStocks(sname).subscribe(data => {
            if(!this.myStockList){
              this.myStockList = data
@@ -159,7 +206,7 @@ export class HomePage {
            this.newstock = ""; 
            this.hideFlyoutsMenu();
            this.tickerStorage.set('shares',this.tickerNames);
-
+           // this.refreshStockInterval();
      });
 
   }
@@ -176,10 +223,12 @@ export class HomePage {
          if(!!val[0] && val.length){
             this.myTickerLoop(val, val.length);
          }
-     })
+     });
+     this.refreshStockInterval();
   }
 
   reloadStocks(){
+      clearInterval(this.clearStcokInterval);
       this.resetStock();
       this.loadStocks();
   }
@@ -190,5 +239,4 @@ export class HomePage {
       this.tickerStorage.set('shares',this.tickerNames);
   }
   
-
 }
