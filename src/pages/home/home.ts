@@ -32,7 +32,7 @@ export class HomePage {
         this.loadStocks();     
   }
 
-  fullShorting(value){
+  fullSorting(value){
       // if(!!this.currentShortValue){
         switch (value){
           case "shortByCustomValue":
@@ -47,6 +47,9 @@ export class HomePage {
           case "shortByScriptName":
               this.shortByScriptName('t');
           break;
+          default:
+              this.myStockList = this.actualStockList;
+          break; 
         }
     // }
   }
@@ -122,7 +125,7 @@ export class HomePage {
 
   startLiveReload(){
       // true
-      this.isAllStocksLoaded = (this.totalStocksList  == String(this.tickerNames))? true:false;
+      this.isAllStocksLoaded = true;
       this.refreshStockInterval();
   }
 
@@ -132,16 +135,14 @@ export class HomePage {
   }
 
   refreshAllStocks(list){
+    this.isAllStocksLoaded = (this.totalStocksList  == String(this.tickerNames))? true:false;
     if(this.isAllStocksLoaded && this.tickerNames.length>0){
       this.financeService.getStocks(list).subscribe(data => {
           this.actualStockList = data;
       });
     }
     this.totalStocksList  = list; 
-    if(!!this.currentShortValue){
-        console.log("inside sorting");
-        this.fullShorting(this.currentShortValue);
-    }
+    this.fullSorting(this.currentShortValue); 
   }
 
   refreshStockInterval(){
