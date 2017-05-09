@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title class="toolbar-content-md">
+      Add Notes for {{tickerName}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="ticker-records">
+	<textarea class="ticker-notes" [(ngModel)]=tickerSavedNotes>
+    
+  </textarea>
+  <button (click)=saveTickerNote() ion-button>Save</button>
+</ion-content>

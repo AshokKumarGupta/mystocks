@@ -5,6 +5,7 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
+import { TickerRecordsPage } from '../pages/ticker-records/ticker-records';
 import { TabsPage } from '../pages/tabs/tabs';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -14,7 +15,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    TickerRecordsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp), HttpModule
@@ -25,7 +27,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     AboutPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    TickerRecordsPage
   ],
   providers: [SplashScreen, {provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

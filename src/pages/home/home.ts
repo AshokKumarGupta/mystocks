@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FinanceService } from '../../app/finance.service';
 import { Storage } from '@ionic/storage';
+import { TickerRecordsPage } from '../../pages/ticker-records/ticker-records';
 
 
 
@@ -26,7 +27,9 @@ export class HomePage {
   isAllStocksLoaded:boolean;
   totalStocksList:string;
   currentShortValue:string; 
-
+  tickerContents:any[];
+  tickerRecords = TickerRecordsPage;
+  
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
   	  	/* ToDo: get the list from database */
         this.loadStocks();     
@@ -123,10 +126,14 @@ export class HomePage {
     }
   }
 
-  startLiveReload(){
+  startLiveReload(){  
       // true
-      this.isAllStocksLoaded = true;
+      this.isAllStocksLoaded = (this.totalStocksList  == String(this.tickerNames))? true:false;
       this.refreshStockInterval();
+  }
+
+  storeTextForTicker(tickerName){
+      this.navCtrl.push(this.tickerRecords,{'tickerName':tickerName}); 
   }
 
   stopLiveReload(){
@@ -213,9 +220,7 @@ export class HomePage {
   }
 
   resetStock(){
-      //if(!!this.myStockList) {
-        this.myStockList = undefined;
-      //}
+     this.myStockList = undefined;
   }
 
   loadStocks(){
@@ -237,7 +242,7 @@ export class HomePage {
   removeStock(index){
     	this.myStockList.splice(index,1);
       this.tickerNames.splice(index,1);
-      this.tickerStorage.set('shares',this.tickerNames);
+      this.tickerStorage.set('shares',this.tickerNames); 
   }
   
 }
