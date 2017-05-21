@@ -15,7 +15,7 @@
     </ion-buttons>
     <ion-buttons start>
       <button ion-button icon-only (click)=toggleFilters()>
-        <ion-icon name="options"></ion-icon> 
+        <ion-icon name="funnel"></ion-icon>
       </button>
     </ion-buttons>
     <div item-center>My Stocks</div>
@@ -54,6 +54,7 @@
         <ion-label>Name</ion-label>
         <ion-radio value="name" (click)="shortByScriptName('t')"></ion-radio>
       </ion-item>
+      <button class="filter-close-button" (click)="hideFlyoutsMenu()" ion-button>Close</button>
     </ion-list>
 </ion-header>
 
@@ -88,4 +89,5 @@
           </ion-item-options>
         </ion-item-sliding>
       </ion-list>  
+      <button class="filter-close-button" *ngIf="!isAllStocksLoaded && this.myStockList != this.actualStockList;" (click)="toggleSearch();hideFlyoutsMenu()" ion-button>Clear Search</button>
 </ion-content>

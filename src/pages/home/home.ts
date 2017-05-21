@@ -31,6 +31,7 @@ export class HomePage {
   tickerRecords = TickerRecordsPage;
   
   constructor(public navCtrl: NavController, private financeService: FinanceService, private tickerStorage: Storage) {
+        this.scriptName = "";
   	  	/* ToDo: get the list from database */
         this.loadStocks();     
   }
@@ -70,7 +71,6 @@ export class HomePage {
           return 0;  
         }
       });
-      this.hideFlyoutsMenu(); 
       this.currentShortValue = "shortByCustomValue";
   }
 
@@ -86,7 +86,6 @@ export class HomePage {
           return 0;  
         }
       });
-      this.hideFlyoutsMenu(); 
       this.currentShortValue = "shortByCustomLoserValue";
   }
 
@@ -102,7 +101,6 @@ export class HomePage {
           return 0;  
         }
       });
-      this.hideFlyoutsMenu(); 
       this.currentShortValue = "shortByCustomGainerValue";
   }
 
@@ -110,7 +108,6 @@ export class HomePage {
       this.myStockList = this.actualStockList.sort( function(name1, name2) {
         return name1[arg].localeCompare(name2[arg]);
       });
-      this.hideFlyoutsMenu(); 
       this.currentShortValue = "shortByScriptName";
   }
 
@@ -122,6 +119,7 @@ export class HomePage {
             }
        });
        this.hideFlyoutsMenu(); 
+       this.stopLiveReload();
        this.scriptName = null;
     }
   }
@@ -241,6 +239,7 @@ export class HomePage {
 
   removeStock(index){
     	this.myStockList.splice(index,1);
+      this.actualStockList = this.myStockList;
       this.tickerNames.splice(index,1);
       this.tickerStorage.set('shares',this.tickerNames); 
   }

@@ -8,15 +8,17 @@ Screens to be added
 
 ## Motivation
 
-I am a small trader in stock market hence i always wanted to create my list of favourite apps as my personal stuff independent of any of the apps available in the market which can suit to my need and also scalable to my need. I also believe many of us wants same hence plan is to launch in the market soon proive the best features without paying anything. 
+I am a small trader in stock market hence i always wanted to create my list of favourite stocks as my personal stuff independent of any of the apps available in the market which can suit to my need and also scalable to my need. I also believe many of us wants same hence plan is to launch in the market soon provide the best features without paying anything. 
 
 ## Installation
 
-To DO
+1. Go to Google Play
+2. Search for myfavstocks
+3. Install it
 
 ## API Reference
 
-To Do
+1. Google API
 
 ## Tests
 

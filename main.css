@@ -21342,6 +21342,7 @@ sub {
     z-index: 1000;
     width: 100%;
     box-shadow: 1px 1px 1px 1px #999;
+    background-color: #fff;
 }
 
 .flyout .list-header-md {
@@ -21373,4 +21374,8 @@ sub {
   width:100%;
   height:300px;
   max-height:300px;
+}
+.filter-close-button{
+  float: right;
+  margin: 10px;
 }
